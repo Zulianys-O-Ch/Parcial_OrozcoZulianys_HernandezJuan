@@ -1,2 +1,2 @@
 # IS_La_ultima_transmision
-JJJJ
+Parcial segundo corte
