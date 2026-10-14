@@ -1,2 +1,2 @@
 # Parcial_OrozcoZulianys_HernandezJuan
-Parcial segundo corte
+Parcial del segundo corte 
