@@ -1,2 +1,2 @@
-# IS_La_ultima_transmision
+# Parcial_OrozcoZulianys_HernandezJuan
 Parcial segundo corte
