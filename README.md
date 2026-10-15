@@ -32,10 +32,14 @@ pip install pytest
 
 ---
 
-## Ejecución del motor
+## Ejecución de las versiones
+
+### Versión 2 (actual)
+
+En la carpeta actual del proyecto, ejecuta:
 
 ```bash
-# Historia principal (La última transmisión)
+# Historia principal, con la función deshacer
 python main.py
 
 # Segunda historia (El laboratorio olvidado)
@@ -44,6 +48,23 @@ python main.py historias/el_laboratorio_olvidado.json
 # Cualquier historia propia
 python main.py ruta/a/tu_historia.json
 ```
+
+### Versión 1 (sin deshacer)
+
+La versión 1 está preservada en el commit `f69bdc7`. Desde la carpeta del repositorio, crea una carpeta de trabajo independiente y ejecútala:
+
+```powershell
+git worktree add ..\Parcial_OrozcoZulianys_V1 f69bdc7
+Set-Location ..\Parcial_OrozcoZulianys_V1
+python main.py
+```
+
+El comando `git worktree add` se ejecuta una sola vez. Para volver a la carpeta de la versión 2, regresa a la carpeta original del repositorio y ejecuta `python main.py`. En Windows, si el comando `python` no está disponible, prueba `py main.py`.
+
+| Versión | Carpeta de ejecución | Comportamiento |
+|---|---|---|
+| V1 | `Parcial_OrozcoZulianys_V1` (worktree del commit `f69bdc7`) | Sin opción para deshacer |
+| V2 | Carpeta actual del repositorio | Deshacer disponible para la última elección válida |
 
 Durante la partida el lector elige escribiendo el **número** de la opción o su **id** directamente.
 Escribe `salir` en cualquier momento para abandonar.
