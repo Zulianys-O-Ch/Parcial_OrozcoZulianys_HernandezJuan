@@ -1,5 +1,5 @@
 """
-sesion.py — Gestor de sesión y motor de historias (RF2–RF5)
+sesion.py — Gestor de sesión y motor de historias (RF2–RF7)
 Responsabilidades:
   - Mantener el estado mutable de la partida (escena actual + variables)
   - Evaluar condiciones de cada opción y filtrar las habilitadas (RF2.2)
@@ -7,6 +7,7 @@ Responsabilidades:
   - Rechazar entradas inválidas o no habilitadas sin alterar el estado (RF3.2)
   - Detectar finales y bloqueos (RF5.1, RF5.3)
   - Reiniciar la sesión a los valores iniciales (RF5.2)
+  - Deshacer una elección válida conservando un solo estado anterior (RF7)
 """
 import copy
 from typing import Dict, List, Optional, Tuple
@@ -20,6 +21,7 @@ class Sesion:
     def __init__(self, historia: Historia) -> None:
         self._historia = historia
         self._estado = self._estado_inicial()
+        self._historial_deshacer = None
 
     # ── Estado ────────────────────────────────────────────────────────────────
 
@@ -32,6 +34,20 @@ class Sesion:
     def reiniciar(self) -> None:
         """RF5.2 — Restaura escena y variables al estado original."""
         self._estado = self._estado_inicial()
+        self._historial_deshacer = None
+
+    @property
+    def puede_deshacer(self) -> bool:
+        """Indica si existe una elección válida que todavía puede deshacerse."""
+        return self._historial_deshacer is not None
+
+    def deshacer(self) -> bool:
+        """Restaura exactamente el estado anterior a la última elección válida."""
+        if self._historial_deshacer is None:
+            return False
+        self._estado = self._historial_deshacer
+        self._historial_deshacer = None
+        return True
 
     # ── Consultas ─────────────────────────────────────────────────────────────
 
@@ -93,6 +109,9 @@ class Sesion:
 
         opcion = habilitadas[id_opcion]
 
+        # Solo las elecciones válidas sustituyen el punto único de restauración.
+        estado_anterior = copy.deepcopy(self._estado)
+
         # Aplicar efectos (RF4.1)
         for variable, valor in opcion.efectos.items():
             self._estado.variables[variable] = valor
@@ -102,6 +121,7 @@ class Sesion:
 
         # Detectar final o bloqueo en la nueva escena (RF5.1, RF5.3)
         self._actualizar_estado()
+        self._historial_deshacer = estado_anterior
 
         return True, None
 

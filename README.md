@@ -47,6 +47,7 @@ python main.py ruta/a/tu_historia.json
 
 Durante la partida el lector elige escribiendo el **número** de la opción o su **id** directamente.
 Escribe `salir` en cualquier momento para abandonar.
+Después de una elección válida también puede escribir `deshacer` para restaurar la escena y las variables anteriores. El retroceso está disponible una sola vez y se habilita de nuevo al realizar otra elección válida; también se ofrece al llegar a un final.
 
 ---
 
@@ -114,9 +115,9 @@ pytest pruebas/test_motor.py -v > resultados_pruebas.txt 2>&1
 
 ---
 
-## Limitaciones conocidas
+## Comportamiento de la versión 2
 
-- **Sin retroceso:** las decisiones son irreversibles dentro de una partida. El reinicio es la única forma de volver al inicio. (Conflicto pendiente de resolución con el cliente — ver informe.)
+- **Deshacer de un nivel:** restaura escena, variables y estado anteriores a la última elección válida. Entradas inválidas no cambian el historial; deshacer lo consume, y reiniciar lo elimina.
 - **Sin guardado:** el estado de la partida vive solo en memoria; al cerrar el programa se pierde.
 - **Solo condiciones de igualdad booleana:** no se soportan comparaciones numéricas ni expresiones complejas.
 - **Ejecución local únicamente:** no requiere conexión a internet.

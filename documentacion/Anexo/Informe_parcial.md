@@ -222,3 +222,57 @@ las mezclaba en un solo mensaje («fin del recorrido o un bloqueo») y el bloque
         -   **Artefactos afectados:** el modelo de estados distingue *Finalizada* de *Bloqueada*, y las pruebas incluyen un caso de bloqueo.
         -   **Cómo se detectó:** en la revisión de los requisitos, con apoyo de una herramienta de IA.
         -   **Otra inconsistencia corregida:** RF3.2 decía «ignorar» la entrada inválida, pero su criterio exigía mostrar un mensaje de error. Se unificó en «rechazar».
+
+## Versión 2 — Solicitud de cambio de la hora 6
+
+La versión 1 se conserva sin cambios en el commit base `f69bdc7` del repositorio. El anexo del cliente sustituye el acuerdo provisional de P1: el lector puede deshacer una elección, con un único nivel de retroceso. P1 queda resuelta; no se ofrece rehacer ni retroceso múltiple.
+
+### Requisito nuevo y criterios de aceptación
+
+**N07.** El lector necesita corregir su última decisión y revertir sus consecuencias sin perder el progreso anterior.
+
+**RF7.1 — Deshacer la última elección válida.** Durante una sesión, el sistema debe restaurar exactamente la escena, las variables y las banderas de sesión al estado inmediatamente anterior a la última elección válida. El sistema ofrece un único nivel de deshacer: al utilizarlo, consume el historial; una nueva elección válida crea un nuevo punto de restauración. Las entradas inválidas no alteran el estado ni reemplazan el historial.
+
+**RF7.2 — Disponibilidad del deshacer.** Al iniciar una sesión no debe existir un estado que deshacer. La acción debe estar disponible desde los finales E4, E5 y E6 para regresar a E3. Al reiniciar, el sistema debe limpiar el historial de deshacer junto con la restauración definida por RF5.2.
+
+**Criterios de aceptación de RF7.1:**
+
+1. Al comenzar una sesión, deshacer no está disponible y no modifica el estado.
+2. Desde E2, elegir `investigar` lleva a E3 con `conoce_origen = true`; deshacer regresa a E2 con `conoce_origen = false`.
+3. Después de deshacer, un segundo intento no cambia escena ni variables. Una nueva elección válida vuelve a habilitar un solo deshacer.
+4. Una opción inexistente o deshabilitada se rechaza y conserva el punto de restauración previo.
+5. Desde E4, E5 o E6 se puede deshacer la elección final y volver a E3 con todos los valores que existían antes de esa elección.
+6. Reiniciar devuelve la sesión a E1 con las variables iniciales y elimina el historial; deshacer después del reinicio no produce cambios.
+
+### Análisis de impacto del cambio
+
+- **Requisitos:** el anexo reemplaza el supuesto provisional de P1. Se incorpora N07 y se especifican RF7.1 y RF7.2; el requisito existente de reinicio RF5.2 conserva su identificador y se coordina con RF7.2 para incluir la limpieza del historial.
+- **Modelo de dominio y sesión:** no cambia el esquema de las historias. `Sesion` requiere conservar una copia profunda del estado anterior a una elección válida, incluyendo escena, variables y banderas `terminada` y `bloqueada`, y descartar esa copia al deshacer o reiniciar.
+- **Flujo de elección:** la validación debe ocurrir antes de reemplazar el snapshot, de modo que tanto una opción inexistente como una deshabilitada preserven el estado y la posibilidad de deshacer existente. Una elección válida reemplaza el snapshot anterior con el estado inmediatamente previo a ella.
+- **Interfaz:** se incorpora el comando `deshacer` cuando existe historial. La interfaz debe aceptarlo también al mostrar un final, para permitir el retorno requerido desde E4, E5 y E6; al volver a una escena activa, presenta nuevamente sus opciones según las variables restauradas.
+- **Contenido y compatibilidad:** no se requieren cambios en JSON, historias ni dependencias externas. La regla aplica a cualquier historia cargada por el motor.
+- **Pruebas y modelos:** U6 cubre restauración y consumo del nivel, preservación ante entradas inválidas y habilitación tras otra elección; U5 verifica que reiniciar borre el historial; I1 recorre la historia cargada y verifica el retorno desde cada final. Se actualizaron los diagramas de casos de uso, secuencia, clases y estados, además de la trazabilidad.
+
+### Backlog de cambio
+
+| Tarea | Estado | Artefacto |
+|---|---|---|
+| Definir RF7.1 y RF7.2 y criterios | Hecho | `documentacion/requerimientos.md`, este informe |
+| Guardar/restaurar snapshot de sesión | Hecho | `motor/sesion.py` |
+| Exponer el comando de retroceso | Hecho | `motor/interfaz.py` |
+| Cubrir U6, reinicio U5 e integración I1 | Hecho | `pruebas/test_motor.py` |
+| Actualizar modelos y trazabilidad | Hecho | `documentacion/Anexo/diagramas/diagramas.md` |
+| Ejecutar suite y dejar evidencia | La suite pytest no pudo arrancar en este entorno porque pytest no está instalado; se registró la limitación y se ejecutó verificación directa del flujo V2 en `pruebas/resultados_pruebas.txt` | U1–U6, I1 |
+
+### Trazabilidad V2
+
+| Cambio | Diseño/código | Verificación |
+|---|---|---|
+| RF7.1: restauración exacta y nivel único | Estado de sesión y snapshot en `Sesion`; transiciones del diagrama de estados | U6: restauración, consumo, segundo intento y nueva elección |
+| RF7.1: entrada inválida no reemplaza historial | Validación antes de guardar el snapshot en `Sesion.elegir` | U6: selección inexistente y opción deshabilitada conservan y permiten usar el snapshot |
+| RF7.2: iniciar y reiniciar sin historial | Constructor y `reiniciar` limpian el punto de deshacer | U5: reinicio limpia historial |
+| RF7.2: deshacer desde finales E4–E6 | Interfaz ofrece deshacer en estado final; snapshot incluye variables | I1 parametrizada: carga real, recorrido y restauración desde E4, E5 y E6 |
+
+### Resultado de verificación y demostración
+
+La suite pytest fue intentada, pero este entorno no tiene el paquete pytest instalado (y el `python` configurado inicialmente era un alias inaccesible); no se reporta como ejecutada. La verificación directa de los flujos V2 queda registrada en `pruebas/resultados_pruebas.txt`. Para la demostración manual: iniciar la historia principal; elegir `revisar`, luego `investigar`; deshacer y comprobar E2 con `conoce_origen = no`; intentar deshacer de nuevo y comprobar que no ocurre nada; continuar y observar en E3 las opciones `activar_sin_verificar` y `cortar`. Como recorrido adicional, llegar a E4, E5 o E6 y ejecutar `deshacer` en el aviso del final para volver a E3. Reiniciar y confirmar que deshacer ya no está disponible.

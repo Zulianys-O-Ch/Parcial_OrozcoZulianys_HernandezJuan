@@ -55,6 +55,17 @@
 
 ---
 
+### N07. El lector necesita corregir su última decisión y revertir también sus consecuencias.
+- **RF7.1 Deshacer última elección válida:**
+  El sistema debe restaurar exactamente la escena, variables y estado de sesión anteriores a la última elección válida. Solo se conserva un nivel; después de deshacerlo, otra elección válida es necesaria para habilitar un nuevo deshacer.
+  *Criterio:* Desde E2, investigar lleva a E3 con `conoce_origen = true`; deshacer vuelve a E2 con `conoce_origen = false`. Un segundo deshacer no cambia el estado. Una entrada inválida no altera el punto de restauración.
+
+- **RF7.2 Disponibilidad, finales y reinicio:**
+  Al iniciar no hay elección que deshacer. Deshacer debe poder invocarse desde E4, E5 y E6 para volver a E3 con las variables previas a la elección final. Reiniciar elimina el historial y restaura el inicio.
+  *Criterio:* Tras reiniciar, deshacer no modifica el estado; desde cualquiera de los tres finales, deshacer restaura E3 y los valores anteriores a esa elección.
+
+---
+
 ### N06. El escritor necesita saber por qué un archivo no es válido antes de que alguien lo juegue.
 - **RF6.1 Validación previa de estructura y datos:**  
   El sistema debe escanear el archivo y rechazarlo si presenta errores críticos.  

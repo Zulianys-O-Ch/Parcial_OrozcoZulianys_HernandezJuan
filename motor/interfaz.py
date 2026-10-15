@@ -60,12 +60,22 @@ def _bucle_partida(sesion: Sesion):
         if sesion.estado.terminada:
             print("══ FIN DEL RECORRIDO ══")
             print("Has alcanzado un desenlace.\n")
+            if sesion.puede_deshacer:
+                accion = input("Escribe 'deshacer' para volver a la escena anterior o Enter para continuar: ").strip().lower()
+                if accion == "deshacer":
+                    sesion.deshacer()
+                    continue
             return
 
         # Bloqueo detectado
         if sesion.estado.bloqueada:
             print("⚠  BLOQUEO: ninguna opción está disponible en este momento.")
             print("   El relato no puede continuar desde aquí.\n")
+            if sesion.puede_deshacer:
+                accion = input("Escribe 'deshacer' para volver a la escena anterior o Enter para continuar: ").strip().lower()
+                if accion == "deshacer":
+                    sesion.deshacer()
+                    continue
             return
 
         opciones = sesion.opciones_habilitadas()
@@ -74,7 +84,12 @@ def _bucle_partida(sesion: Sesion):
         ids_validos = {opc.id for opc in opciones}
         numeros_validos = {str(i): opc.id for i, opc in enumerate(opciones, 1)}
 
-        entrada = input("Elige (número o id, 'salir' para abandonar): ").strip()
+        ayuda_deshacer = " o 'deshacer'" if sesion.puede_deshacer else ""
+        entrada = input(f"Elige (número o id{ayuda_deshacer}, 'salir' para abandonar): ").strip()
+
+        if entrada.lower() == "deshacer":
+            if sesion.deshacer():
+                continue
 
         if entrada.lower() == "salir":
             print("\nSaliendo de la partida.")

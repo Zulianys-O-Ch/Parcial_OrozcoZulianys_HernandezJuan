@@ -53,6 +53,7 @@ flowchart LR
         UC9(["Informar final o bloqueo"])
         UC10(["Reiniciar partida"])
         UC11(["Preparar archivo JSON"])
+        UC12(["Deshacer última elección válida"])
     end
 
     E --- UC11
@@ -67,21 +68,23 @@ flowchart LR
     L --- UC7
     L --- UC9
     L --- UC10
+    L --- UC12
 
     UC4 --> UC5
     UC5 --> UC6
     UC6 --> UC7
-    UC7 -->|"Selección válida"| UC8
+    UC7 -->|"Elección válida y guardar estado previo"| UC8
     UC8 --> UC5
     UC7 -->|"Selección inválida"| UC7
     UC5 --> UC9
     UC9 --> UC10
     UC10 --> UC4
+    UC12 -->|"Restaurar snapshot y consumir nivel"| UC5
 
     classDef actor fill:#e8f0fe,stroke:#356ac3,color:#17365d
     classDef usecase fill:#f5f3ff,stroke:#805ad5,color:#322659
     class L,E actor
-    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11 usecase
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12 usecase
 ```
 
 ## A3. Diagrama de clases del dominio
@@ -123,7 +126,9 @@ classDiagram
         +Boolean finalizada
         +iniciar(historia)
         +elegirOpcion(id)
+        +deshacer()
         +reiniciar()
+        +puedeDeshacer
         +detectarFinalOBloqueo()
     }
 
@@ -195,12 +200,22 @@ sequenceDiagram
                 S-->>UI: Entrada inválida
                 UI-->>L: Informar y volver a solicitar
             else Opción habilitada
+                S->>S: Guardar copia profunda del estado previo
                 M->>M: Aplicar efectos
                 M->>M: Actualizar escena activa
                 M->>M: Comprobar final o bloqueo
                 M-->>S: Nuevo estado
                 S-->>UI: Escena, opciones y estado
                 UI-->>L: Mostrar resultado
+            end
+
+            opt El lector solicita deshacer y existe snapshot
+                L->>UI: deshacer
+                UI->>S: deshacer()
+                S->>S: Restaurar escena, variables y banderas
+                S->>S: Consumir snapshot
+                S-->>UI: Estado anterior
+                UI-->>L: Mostrar escena restaurada
             end
         end
 
@@ -230,11 +245,14 @@ stateDiagram-v2
 
     Jugando --> Jugando: Elección válida / efectos y transición
     Jugando --> Jugando: Entrada inválida / conservar estado
+    Jugando --> Jugando: Deshacer disponible / restaurar snapshot y consumirlo
     Jugando --> Finalizada: Escena marcada como final
     Jugando --> Bloqueada: Cero opciones habilitadas y no es final
 
-    Finalizada --> Jugando: Reiniciar / restaurar valores iniciales
-    Bloqueada --> Jugando: Reiniciar / restaurar valores iniciales
+    Finalizada --> Jugando: Deshacer disponible / volver al estado previo
+    Bloqueada --> Jugando: Deshacer disponible / volver al estado previo
+    Finalizada --> Jugando: Reiniciar / restaurar valores iniciales y borrar historial
+    Bloqueada --> Jugando: Reiniciar / restaurar valores iniciales y borrar historial
 
     Jugando --> SinPartida: Cerrar sesión
     SinPartida --> [*]: Cerrar programa

@@ -410,6 +410,63 @@ class TestU5Reinicio:
         # La historia en sí no debe haber cambiado
         assert historia.variables["conoce_origen"] is False
 
+    def test_reinicio_elimina_historial_de_deshacer(self):
+        sesion = _sesion_minima()
+        sesion.elegir("avanzar")
+        assert sesion.puede_deshacer
+        sesion.reiniciar()
+        assert not sesion.puede_deshacer
+        assert not sesion.deshacer()
+        assert sesion.estado.escena_actual == "E1"
+
+
+# U6 — Deshacer restaura estado y consume el único nivel disponible
+class TestU6Deshacer:
+    def test_deshacer_restaura_escena_variables_y_se_consume(self):
+        sesion = _sesion_minima()
+        assert not sesion.puede_deshacer
+        sesion.elegir("avanzar")
+        assert sesion.estado.escena_actual == "E2"
+        assert sesion.estado.variables["bandera"] is True
+        assert sesion.deshacer()
+        assert sesion.estado.escena_actual == "E1"
+        assert sesion.estado.variables["bandera"] is False
+        assert not sesion.puede_deshacer
+        assert not sesion.deshacer()
+
+    def test_entrada_invalida_preserva_historial(self):
+        sesion = _historia_con_condicion()
+        sesion.elegir("libre")
+        estado = copy.deepcopy(sesion.estado)
+        exito, _ = sesion.elegir("inexistente")
+        assert not exito
+        assert sesion.estado == estado
+        assert sesion.puede_deshacer
+        assert sesion.deshacer()
+        assert sesion.estado.escena_actual == "E1"
+
+    def test_opcion_deshabilitada_preserva_historial(self):
+        sesion = Sesion(cargar("historias/la_ultima_transmision.json"))
+        sesion.elegir("revisar")
+        sesion.elegir("continuar")
+        assert sesion.estado.escena_actual == "E3"
+        exito, _ = sesion.elegir("activar_codigo")  # requiere conoce_origen=True
+        assert not exito
+        assert sesion.puede_deshacer
+        assert sesion.deshacer()
+        assert sesion.estado.escena_actual == "E2"
+        assert sesion.estado.variables["conoce_origen"] is False
+
+    def test_nueva_eleccion_valida_habilita_otro_deshacer(self):
+        sesion = _historia_con_condicion()
+        sesion.elegir("libre")
+        sesion.deshacer()
+        sesion.elegir("libre")
+        assert sesion.puede_deshacer
+        assert sesion.deshacer()
+        assert sesion.estado.escena_actual == "E1"
+        assert sesion.estado.variables["bandera"] is False
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # I1 — Integración: carga de archivo real + flujo completo hasta un final
@@ -455,6 +512,25 @@ class TestI1Integracion:
         assert sesion.estado.escena_actual == "E6"
         assert sesion.estado.terminada is True
         assert sesion.estado.variables["confia_en_la_voz"] is False
+
+    @pytest.mark.parametrize("eleccion_final, escena_final", [
+        ("activar_codigo", "E4"),
+        ("activar_sin_verificar", "E5"),
+        ("cortar", "E6"),
+    ])
+    def test_deshacer_final_devuelve_a_e3(self, eleccion_final, escena_final):
+        historia = cargar("historias/la_ultima_transmision.json")
+        sesion = Sesion(historia)
+        sesion.elegir("revisar")
+        sesion.elegir("investigar" if eleccion_final == "activar_codigo" else "continuar")
+        valores_previos = copy.deepcopy(sesion.estado.variables)
+        sesion.elegir(eleccion_final)
+        assert sesion.estado.escena_actual == escena_final
+        assert sesion.estado.terminada
+        assert sesion.deshacer()
+        assert sesion.estado.escena_actual == "E3"
+        assert sesion.estado.variables == valores_previos
+        assert not sesion.estado.terminada
 
     def test_segunda_historia_sin_modificar_motor(self):
         """RNF01: la segunda historia carga y se juega sin tocar el motor."""

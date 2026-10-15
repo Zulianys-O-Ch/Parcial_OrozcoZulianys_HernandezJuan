@@ -37,3 +37,13 @@ pruebas/test_motor.py::TestI1Integracion::test_final_e6_silencio PASSED  [ 96%]
 pruebas/test_motor.py::TestI1Integracion::test_segunda_historia_sin_modificar_motor PASSED [100%]
 
 ============================= 30 passed in 0.10s ==============================
+
+--- Evidencia de versión 2 (2026-10-15) ---
+La salida de pytest anterior en este archivo corresponde a la versión 1 (30 pruebas). La suite V2 no se pudo ejecutar: el entorno de trabajo no tiene pytest instalado; `python -m pytest` respondió `No module named pytest`.
+
+Verificación funcional directa con Python 3.11.9:
+- V2 functional checks passed: inicio sin historial, E2→E3 con efecto, deshacer a E2 restaurando `conoce_origen`, segundo deshacer sin efecto, restauración de E3 desde E4 y limpieza por reinicio.
+- E4/E5/E6, invalid-input preservation, new undo level, and reset passed: desde cada final se restaura E3 y las variables previas; la entrada inexistente preserva el snapshot; una nueva elección vuelve a habilitar el retroceso; reiniciar lo elimina.
+- Disabled-option input preserved undo history: la opción `activar_codigo` rechazada desde E3 conserva el punto que permite volver a E2.
+
+Estas comprobaciones funcionales no sustituyen la ejecución de pytest; la suite V2 incluye las pruebas U6 y extensiones U5/I1 en `pruebas/test_motor.py` y puede ejecutarse con `python -m pytest pruebas/test_motor.py -v` en un entorno con pytest instalado.
