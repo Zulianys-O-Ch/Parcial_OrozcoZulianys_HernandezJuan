@@ -322,30 +322,14 @@ flowchart TB
 
 Las siguientes secciones se reservan para incorporar las capturas reales del tablero utilizado por el equipo. Las imágenes deben permitir observar la organización de las tareas, su estado y la distribución del trabajo.
 
-### A7.1. Vista general del tablero
+### A7.1. Tablero general
 
-**Espacio reservado para insertar la captura del tablero general.**
+![Tablero general]()
 
-> Insertar aquí la imagen.
+### A7.2. Tareas en proceso
 
-![Espacio reservado para la captura del tablero general](capturas/tablero_general.png)
+![Tareas en proceso](pruebas/tareas_en_proceso.png)
 
----
+### A7.3. Tareas completadas
 
-### A7.2. Tareas y estado de avance
-
-**Espacio reservado para insertar la captura de las tareas y sus estados.**
-
-> Insertar aquí la imagen.
-
-![Espacio reservado para la captura de tareas](capturas/tablero_tareas.png)
-
----
-
-### A7.3. Distribución del trabajo por integrante
-
-**Espacio reservado para insertar la captura de la asignación de tareas.**
-
-> Insertar aquí la imagen.
-
-![Espacio reservado para la captura de asignaciones](capturas/tablero_integrantes.png)
+![Tareas completadas](pruebas/tareas_completadas.png)
