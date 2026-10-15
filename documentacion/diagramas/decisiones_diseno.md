@@ -82,12 +82,12 @@ Las pruebas y sus resultados se documentarán cuando se implemente el sistema. E
 
 Las decisiones anteriores se complementan con los diagramas de la carpeta `documentacion/`:
 
-- `01_contexto.mmd`: actores y límites del sistema.
-- `02_casos_uso.mmd`: acciones principales que ofrece el sistema.
-- `03_clases.mmd`: clases propuestas y sus relaciones.
-- `04_secuencia.mmd`: interacción durante la carga, validación y ejecución de una partida.
-- `05_estados.mmd`: estados posibles de la partida y sus transiciones.
-- `06_arquitectura.mmd`: organización de los componentes y sus responsabilidades.
+- `Diagrama 1 — Contexto del sistema`: actores y límites del sistema.
+- `Diagrama 2 — Casos de uso`: acciones principales que ofrece el sistema.
+- `Diagrama 3 — Clases del dominio`: clases propuestas y sus relaciones.
+- `Diagrama 4 — Secuencia de selección y validación`: interacción durante la carga, validación y ejecución de una partida.
+- `Diagrama 5 — Máquina de estados de la sesión`: estados posibles de la partida y sus transiciones.
+- `arquitectura.md`: organización de los componentes y sus responsabilidades.
 
 Los diagramas y este documento deberán mantenerse coherentes con los requerimientos y con el código que finalmente se implemente.
 
