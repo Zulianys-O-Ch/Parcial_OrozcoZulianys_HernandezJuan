@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Motor de Historias Interactivas — La última transmisión
 
 **Integrantes:**
@@ -120,3 +121,15 @@ pytest pruebas/test_motor.py -v > resultados_pruebas.txt 2>&1
 - **Sin guardado:** el estado de la partida vive solo en memoria; al cerrar el programa se pierde.
 - **Solo condiciones de igualdad booleana:** no se soportan comparaciones numéricas ni expresiones complejas.
 - **Ejecución local únicamente:** no requiere conexión a internet.
+=======
+# La última transmisión: motor de historias interactivas
+
+Parcial práctico de Ingeniería de Software. El programa de consola interpreta historias interactivas escritas en archivos JSON. Muestra solo las decisiones habilitadas por lo ocurrido, aplica sus consecuencias y valida el archivo antes de jugarlo.
+
+## Integrantes
+
+| Nombre | Código |
+|---|---|
+| Zulianys Orozco Chavez | T00078330 |
+| Juan Hernandez Avila | T00081559 |
+>>>>>>> 4b603548099ee8767d7f9d8def802d73396390af
