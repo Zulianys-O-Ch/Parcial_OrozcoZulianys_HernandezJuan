@@ -80,7 +80,7 @@ Las pruebas y sus resultados se documentarán cuando se implemente el sistema. E
 
 ## 9. Relación con los diagramas
 
-Las decisiones anteriores se complementan con los diagramas de la carpeta `documentacion/`:
+Las decisiones anteriores se complementan con los diagramas de la carpeta `documentacion/ diagramas/`:
 
 - `Diagrama 1 — Contexto del sistema`: actores y límites del sistema.
 - `Diagrama 2 — Casos de uso`: acciones principales que ofrece el sistema.
