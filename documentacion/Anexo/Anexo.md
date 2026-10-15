@@ -332,4 +332,6 @@ Las siguientes secciones se reservan para incorporar las capturas reales del tab
 
 ### A7.3. Tareas completadas
 
-![Tareas completadas](pruebas/tareas_completadas.png)
+
+![Tareas terminadas](Pruebas/Tareas%20terminadas.png)
+
