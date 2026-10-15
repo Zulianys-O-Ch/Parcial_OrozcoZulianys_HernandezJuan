@@ -328,7 +328,7 @@ Las siguientes secciones se reservan para incorporar las capturas reales del tab
 
 ### A7.2. Tareas en proceso
 
-![Tareas en proceso](pruebas/tareas_en_proceso.png)
+![Tareas en proceso](Pruebas/Tablero%20despu%C3%A9s%20de%20terminar%20la%20primera%20versi%C3%B3n%2C%20sin%20el%20cambio%20del%20cliente.png)
 
 ### A7.3. Tareas completadas
 
