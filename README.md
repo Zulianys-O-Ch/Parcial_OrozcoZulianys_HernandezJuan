@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Motor de Historias Interactivas — La última transmisión
 
 **Integrantes:**
@@ -132,4 +131,3 @@ Parcial práctico de Ingeniería de Software. El programa de consola interpreta 
 |---|---|
 | Zulianys Orozco Chavez | T00078330 |
 | Juan Hernandez Avila | T00081559 |
->>>>>>> 4b603548099ee8767d7f9d8def802d73396390af
