@@ -1,0 +1,39 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.15, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\orozc\AppData\Local\Programs\Python\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\orozc\Documents\Parcial_OrozcoZulianys_HernandezJuan
+plugins: dash-4.4.1
+collecting ... collected 30 items
+
+pruebas/test_motor.py::TestU1Condiciones::test_opcion_sin_condicion_siempre_habilitada PASSED [  3%]
+pruebas/test_motor.py::TestU1Condiciones::test_opcion_con_condicion_falsa_no_habilitada PASSED [  6%]
+pruebas/test_motor.py::TestU1Condiciones::test_opcion_con_condicion_verdadera_habilitada PASSED [ 10%]
+pruebas/test_motor.py::TestU1Condiciones::test_ca01_la_ultima_transmision PASSED [ 13%]
+pruebas/test_motor.py::TestU2EleccionValida::test_avanza_al_destino_correcto PASSED [ 16%]
+pruebas/test_motor.py::TestU2EleccionValida::test_aplica_efectos PASSED  [ 20%]
+pruebas/test_motor.py::TestU2EleccionValida::test_detecta_final_tras_avanzar PASSED [ 23%]
+pruebas/test_motor.py::TestU2EleccionValida::test_ca02_activar_sin_verificar_lleva_a_e5 PASSED [ 26%]
+pruebas/test_motor.py::TestU3OpcionInvalida::test_opcion_inexistente_devuelve_falso PASSED [ 30%]
+pruebas/test_motor.py::TestU3OpcionInvalida::test_estado_intacto_tras_opcion_inexistente PASSED [ 33%]
+pruebas/test_motor.py::TestU3OpcionInvalida::test_opcion_no_habilitada_devuelve_falso PASSED [ 36%]
+pruebas/test_motor.py::TestU3OpcionInvalida::test_estado_intacto_tras_opcion_no_habilitada PASSED [ 40%]
+pruebas/test_motor.py::TestU4Validacion::test_archivo_ilegible PASSED    [ 43%]
+pruebas/test_motor.py::TestU4Validacion::test_campo_obligatorio_ausente PASSED [ 46%]
+pruebas/test_motor.py::TestU4Validacion::test_inicio_inexistente PASSED  [ 50%]
+pruebas/test_motor.py::TestU4Validacion::test_id_escena_duplicado PASSED [ 53%]
+pruebas/test_motor.py::TestU4Validacion::test_destino_inexistente PASSED [ 56%]
+pruebas/test_motor.py::TestU4Validacion::test_variable_no_declarada PASSED [ 60%]
+pruebas/test_motor.py::TestU4Validacion::test_valor_no_booleano_en_variables PASSED [ 63%]
+pruebas/test_motor.py::TestU4Validacion::test_escena_final_con_opciones PASSED [ 66%]
+pruebas/test_motor.py::TestU4Validacion::test_escena_no_final_sin_opciones PASSED [ 70%]
+pruebas/test_motor.py::TestU4Validacion::test_id_opcion_duplicado_en_escena PASSED [ 73%]
+pruebas/test_motor.py::TestU5Reinicio::test_reinicio_restaura_escena PASSED [ 76%]
+pruebas/test_motor.py::TestU5Reinicio::test_reinicio_restaura_variables PASSED [ 80%]
+pruebas/test_motor.py::TestU5Reinicio::test_reinicio_limpia_estado_terminado PASSED [ 83%]
+pruebas/test_motor.py::TestU5Reinicio::test_reinicio_no_afecta_historia_original PASSED [ 86%]
+pruebas/test_motor.py::TestI1Integracion::test_final_e4_rescate PASSED   [ 90%]
+pruebas/test_motor.py::TestI1Integracion::test_final_e5_eco PASSED       [ 93%]
+pruebas/test_motor.py::TestI1Integracion::test_final_e6_silencio PASSED  [ 96%]
+pruebas/test_motor.py::TestI1Integracion::test_segunda_historia_sin_modificar_motor PASSED [100%]
+
+============================= 30 passed in 0.10s ==============================

@@ -1,0 +1,77 @@
+{
+  "titulo": "El laboratorio olvidado",
+  "inicio": "L1",
+  "variables": {
+    "tiene_llave": false,
+    "alarma_activa": false
+  },
+  "escenas": [
+    {
+      "id": "L1",
+      "texto": "Entras a un laboratorio abandonado. La puerta trasera está cerrada con llave. En el suelo hay una caja metálica y un panel de control parpadeante.",
+      "final": false,
+      "opciones": [
+        {
+          "id": "abrir_caja",
+          "texto": "Abrir la caja metálica",
+          "destino": "L2",
+          "condiciones": {},
+          "efectos": { "tiene_llave": true }
+        },
+        {
+          "id": "tocar_panel",
+          "texto": "Tocar el panel de control",
+          "destino": "L2",
+          "condiciones": {},
+          "efectos": { "alarma_activa": true }
+        }
+      ]
+    },
+    {
+      "id": "L2",
+      "texto": "Llegas a la puerta trasera. Puedes intentar abrirla si tienes la llave, o salir por la ventana si la alarma no está activa.",
+      "final": false,
+      "opciones": [
+        {
+          "id": "usar_llave",
+          "texto": "Usar la llave para abrir la puerta",
+          "destino": "L3",
+          "condiciones": { "tiene_llave": true },
+          "efectos": {}
+        },
+        {
+          "id": "salir_ventana",
+          "texto": "Escapar por la ventana",
+          "destino": "L4",
+          "condiciones": { "alarma_activa": false },
+          "efectos": {}
+        },
+        {
+          "id": "quedarse",
+          "texto": "Quedarse y esperar",
+          "destino": "L5",
+          "condiciones": {},
+          "efectos": {}
+        }
+      ]
+    },
+    {
+      "id": "L3",
+      "texto": "Abres la puerta trasera con la llave y sales al exterior. La luz del amanecer ilumina el camino. Escapaste con seguridad.",
+      "final": true,
+      "opciones": []
+    },
+    {
+      "id": "L4",
+      "texto": "Sales por la ventana sin que nadie te vea. El laboratorio queda atrás en silencio.",
+      "final": true,
+      "opciones": []
+    },
+    {
+      "id": "L5",
+      "texto": "Decides esperar. Al amanecer llega un guardia y te encuentra. Tendrás que dar muchas explicaciones.",
+      "final": true,
+      "opciones": []
+    }
+  ]
+}
