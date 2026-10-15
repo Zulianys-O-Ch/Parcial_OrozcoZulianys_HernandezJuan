@@ -324,7 +324,7 @@ Las siguientes secciones se reservan para incorporar las capturas reales del tab
 
 ### A7.1. Tablero general
 
-![Tablero general](Pruebas/Creación_del_tablero_en_Trello.png)
+![Tablero general](Pruebas/Creación%20del%20tablero%20en%20Trello.png)
 
 ### A7.2. Tareas en proceso
 
