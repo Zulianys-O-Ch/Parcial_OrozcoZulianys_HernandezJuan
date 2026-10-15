@@ -61,6 +61,26 @@ python main.py
 
 El comando `git worktree add` se ejecuta una sola vez. Para volver a la carpeta de la versión 2, regresa a la carpeta original del repositorio y ejecuta `python main.py`. En Windows, si el comando `python` no está disponible, prueba `py main.py`.
 
+#### Cambiar de versión desde PowerShell
+
+`python main.py` ejecuta la versión que existe en la carpeta actual de la terminal. Para pasar de V1 a V2, vuelve a la carpeta original del repositorio antes de ejecutar el programa:
+
+```powershell
+Set-Location "C:\Users\LENOVO\OneDrive - Universidad Tecnológica de Bolívar\Escritorio\Parcial Ing. Software\Parcial_OrozcoZulianys_HernandezJuan"
+Get-Location  # Confirma que estás en la carpeta original (V2)
+python main.py
+```
+
+Para ir de la carpeta original a V1, usa la carpeta paralela del worktree:
+
+```powershell
+Set-Location "..\Parcial_OrozcoZulianys_V1"
+Get-Location  # Confirma que estás en el worktree (V1)
+python main.py
+```
+
+Si `Get-Location` muestra la carpeta V1, `python main.py` seguirá ejecutando V1 hasta que cambies a la carpeta original.
+
 | Versión | Carpeta de ejecución | Comportamiento |
 |---|---|---|
 | V1 | `Parcial_OrozcoZulianys_V1` (worktree del commit `f69bdc7`) | Sin opción para deshacer |
